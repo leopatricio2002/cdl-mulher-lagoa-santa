@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onOpenMembership: () => void;
-  onOpenReference: () => void;
 }
 
 export interface NavItem {
@@ -28,7 +27,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenMembership,
-  onOpenReference,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -114,18 +112,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
-        {/* Quick action: Reference preview button */}
-        <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
-          <button
-            onClick={onOpenReference}
-            className="text-[11px] uppercase tracking-wider text-neutral-300/90 hover:text-white transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-full border border-fuchsia-900/60 hover:border-fuchsia-700 bg-neutral-950/40 cursor-pointer"
-            title="Comparar com o design original fornecido"
-          >
-            <span>Ver Referência</span>
-            <ExternalLink size={12} className="text-[#d946ef]" />
-          </button>
-        </div>
       </div>
 
       {/* Mobile Drawer Menu */}
@@ -167,15 +153,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full py-3 rounded-full text-xs uppercase tracking-widest font-medium bg-[#d946ef] text-white text-center shadow-[0_4px_20px_rgba(217,70,239,0.35)] cursor-pointer"
               >
                 Seja uma associada
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenReference();
-                }}
-                className="w-full py-2.5 text-[11px] uppercase tracking-wider text-neutral-300 border border-fuchsia-800/50 rounded-full cursor-pointer"
-              >
-                Ver imagem de referência
               </button>
             </div>
           </motion.div>

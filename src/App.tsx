@@ -81,7 +81,6 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenMembership={() => setMembershipModalOpen(true)}
-        onOpenReference={() => setReferenceModalOpen(true)}
       />
 
       {/* 
