@@ -41,20 +41,46 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const scrollToSection = (id: string) => {
     setActiveTab(id);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
+
+    if (id === 'inicio') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
+
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.getBoundingClientRect().height : 70;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - headerHeight - 16;
+
+        window.scrollTo({
+          top: Math.max(0, offsetPosition),
+          behavior: 'smooth',
+        });
+      }
+    }, 80);
   };
 
   return (
-    <header 
-      className={`sticky top-0 w-full z-40 transition-all duration-300 py-3 sm:py-4 border-none ${
-        isScrolled 
-          ? 'bg-[#580539]/95 backdrop-blur-md shadow-sm' 
-          : 'bg-transparent'
-      }`}
-    >
+    <>
+      {/* Mobile Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-30 sm:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      <header 
+        className={`sticky top-0 relative w-full z-40 transition-all duration-300 py-3 sm:py-4 border-none ${
+          isScrolled || mobileMenuOpen
+            ? 'bg-[#580539]/95 backdrop-blur-md shadow-md' 
+            : 'bg-transparent'
+        }`}
+      >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between relative">
         {/* Logo CDL Mulher no canto superior esquerdo */}
         <button
@@ -118,10 +144,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="sm:hidden bg-[#49042f] border-b border-fuchsia-800/40 px-6 py-5 mt-3 space-y-4 shadow-2xl"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="sm:hidden absolute top-full left-0 right-0 bg-[#49042f] border-b border-fuchsia-800/40 px-6 py-5 space-y-4 shadow-2xl z-40"
           >
             <div className="flex flex-col space-y-2">
               {navItems.map((item) => {
@@ -129,12 +156,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => {
-                      scrollToSection(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center justify-between text-left py-2.5 text-sm uppercase tracking-[0.2em] cursor-pointer ${
-                      isActive ? 'text-[#d946ef] font-semibold' : 'text-neutral-200'
+                    onClick={() => scrollToSection(item.id)}
+                    className={`flex items-center justify-between text-left py-2.5 text-sm uppercase tracking-[0.2em] cursor-pointer w-full ${
+                      isActive ? 'text-[#d946ef] font-semibold' : 'text-neutral-200 hover:text-white'
                     }`}
                   >
                     <span>{item.label}</span>
@@ -159,5 +183,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 };
