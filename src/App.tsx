@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
-import { HeroSection, TextLayoutCadence } from './components/HeroSection';
+import { HeroSection } from './components/HeroSection';
 import { MembershipModal } from './components/MembershipModal';
-import { ReferenceViewerModal } from './components/ReferenceViewerModal';
-import { CadenceSelector } from './components/CadenceSelector';
 import { 
   Handshake, 
   Mail, 
@@ -22,9 +20,7 @@ import imgBeneficioVisibilidade from './assets/images/beneficio_visibilidade_179
 export default function App() {
   const [activeTab, setActiveTab] = useState('inicio');
   const [currentBenefit, setCurrentBenefit] = useState(0);
-  const [cadence, setCadence] = useState<TextLayoutCadence>('cadence-balanced');
   const [membershipModalOpen, setMembershipModalOpen] = useState(false);
-  const [referenceModalOpen, setReferenceModalOpen] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
 
   // Sincroniza a aba ativa conforme o usuário rola a página (IntersectionObserver)
@@ -125,7 +121,6 @@ export default function App() {
           <div className="relative z-10 w-full">
             <HeroSection
               onOpenMembership={() => setMembershipModalOpen(true)}
-              cadence={cadence}
             />
           </div>
         </section>
@@ -633,22 +628,10 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Discrete bottom bar controls for testing line cadence and verifying against reference */}
-      <CadenceSelector
-        cadence={cadence}
-        setCadence={setCadence}
-        onOpenReference={() => setReferenceModalOpen(true)}
-      />
-
       {/* Interactive Modals */}
       <MembershipModal
         isOpen={membershipModalOpen}
         onClose={() => setMembershipModalOpen(false)}
-      />
-
-      <ReferenceViewerModal
-        isOpen={referenceModalOpen}
-        onClose={() => setReferenceModalOpen(false)}
       />
     </div>
   );
