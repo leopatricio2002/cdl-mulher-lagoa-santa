@@ -1,0 +1,6 @@
+{
+  "name": "Rede de Empreendedoras - Hero Section",
+  "description": "Recriação minimalista da hero section com fundo preto, tipografia precisa e CTA Seja uma associada.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
